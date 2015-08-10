@@ -52,6 +52,12 @@
 @property (nonatomic) BOOL autoPlayOnAppear;
 @property (nonatomic) NSUInteger delayToHideElements;
 @property (nonatomic, readonly) NSUInteger currentIndex;
+// Appearance
+@property (nonatomic) UIColor *backgroundColor; // default [UIColor blackColor]
+@property (nonatomic) UIColor *tintColor; // default [UIColor whiteColor]
+@property (nonatomic) UIColor *barTintColor; // default nil
+@property (nonatomic) UIBarStyle barStyle; // default UIBarStyleBlack
+@property (nonatomic) BOOL translucent; // default YES
 
 // Customise image selection icons as they are the only icons with a colour tint
 // Icon should be located in the app's main bundle
