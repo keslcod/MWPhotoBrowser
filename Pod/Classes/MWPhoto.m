@@ -24,7 +24,6 @@
 }
 
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) NSURL *photoURL;
 @property (nonatomic, strong) PHAsset *asset;
 @property (nonatomic) CGSize assetTargetSize;
 
@@ -126,6 +125,9 @@
         self.videoURL = [aDecoder decodeObjectForKey:@"videoURL"];
         self.emptyImage = [aDecoder decodeBoolForKey:@"emptyImage"];
         self.isVideo = [aDecoder decodeBoolForKey:@"isVideo"];
+        self.photoURL = [aDecoder decodeObjectForKey:@"photoURL"];
+        self.image = [aDecoder decodeObjectForKey:@"image"];
+        // asset & assetTargetSize not supported yet
     }
     return self;
 }
@@ -135,6 +137,8 @@
     [aCoder encodeObject:self.videoURL forKey:@"videoURL"];
     [aCoder encodeBool:self.emptyImage forKey:@"emptyImage"];
     [aCoder encodeBool:self.isVideo forKey:@"isVideo"];
+    [aCoder encodeObject:self.photoURL forKey:@"photoURL"];
+    [aCoder encodeObject:self.image forKey:@"image"];
 }
 
 #pragma mark - Video
