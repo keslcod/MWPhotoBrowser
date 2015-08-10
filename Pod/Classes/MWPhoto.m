@@ -14,12 +14,13 @@
 #import "MWPhotoBrowser.h"
 
 @interface MWPhoto () {
-
+    
     BOOL _loadingInProgress;
     id <SDWebImageOperation> _webImageOperation;
     PHImageRequestID _assetRequestID;
     PHImageRequestID _assetVideoRequestID;
-        
+
+    SDWebImageOptions _webImageOptions;
 }
 
 @property (nonatomic, strong) UIImage *image;
@@ -38,11 +39,15 @@
 #pragma mark - Class Methods
 
 + (MWPhoto *)photoWithImage:(UIImage *)image {
-	return [[MWPhoto alloc] initWithImage:image];
+    return [[MWPhoto alloc] initWithImage:image];
 }
 
 + (MWPhoto *)photoWithURL:(NSURL *)url {
     return [[MWPhoto alloc] initWithURL:url];
+}
+
++ (MWPhoto *)photoWithURL:(NSURL *)url webImageOptions:(SDWebImageOptions)webImageOptions {
+    return [[MWPhoto alloc] initWithURL:url webImageOptions:webImageOptions];
 }
 
 + (MWPhoto *)photoWithAsset:(PHAsset *)asset targetSize:(CGSize)targetSize {
@@ -72,9 +77,14 @@
 }
 
 - (id)initWithURL:(NSURL *)url {
+    return [self initWithURL:url webImageOptions:0];
+}
+
+- (id)initWithURL:(NSURL *)url webImageOptions:(SDWebImageOptions)webImageOptions {
     if ((self = [super init])) {
         self.photoURL = url;
         [self setup];
+        _webImageOptions = webImageOptions;
     }
     return self;
 }
@@ -213,7 +223,7 @@
     @try {
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
         _webImageOperation = [manager downloadImageWithURL:url
-                                                   options:0
+                                                   options:_webImageOptions
                                                   progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                                       if (expectedSize > 0) {
                                                           float progress = receivedSize / (float)expectedSize;
@@ -307,13 +317,13 @@
             [self imageLoadingComplete];
         });
     }];
-
+    
 }
 
 // Release if we can get it again from path or url
 - (void)unloadUnderlyingImage {
     _loadingInProgress = NO;
-	self.underlyingImage = nil;
+    self.underlyingImage = nil;
 }
 
 - (void)imageLoadingComplete {
