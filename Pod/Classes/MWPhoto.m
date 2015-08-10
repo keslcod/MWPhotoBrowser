@@ -118,6 +118,25 @@
     [self cancelAnyLoading];
 }
 
+#pragma mark - NSCoding
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super init])) {
+        self.caption = [aDecoder decodeObjectForKey:@"caption"];
+        self.videoURL = [aDecoder decodeObjectForKey:@"videoURL"];
+        self.emptyImage = [aDecoder decodeBoolForKey:@"emptyImage"];
+        self.isVideo = [aDecoder decodeBoolForKey:@"isVideo"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.caption forKey:@"caption"];
+    [aCoder encodeObject:self.videoURL forKey:@"videoURL"];
+    [aCoder encodeBool:self.emptyImage forKey:@"emptyImage"];
+    [aCoder encodeBool:self.isVideo forKey:@"isVideo"];
+}
+
 #pragma mark - Video
 
 - (void)setVideoURL:(NSURL *)videoURL {
